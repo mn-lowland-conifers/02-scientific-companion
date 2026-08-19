@@ -1,0 +1,43 @@
+project:
+  type: book
+
+book:
+  title: "Science Companion to the Legislative Report"
+  subtitle: "Lowland Conifer Peatland Carbon in Minnesota"
+  author: ""
+  date: last-modified
+  chapters:
+    - index.md
+    - x01-introduction.md
+    - part: "Part I — Statewide Peatland Carbon: Digital Soil Mapping"
+      chapters:
+        - x02-data-covariates.md
+        - x03-peatland-probability-model.md
+        - x04-peat-depth-model.md
+        - x05-decomposition-model.md
+        - x06-carbon-stock-estimation.md
+    - part: "Part II — Field Validation & Ecosystem Carbon (2025 Season)"
+      chapters:
+        - x07-field-campaign-design.md
+        - x08-aboveground-carbon-methods.md
+        - x09-belowground-carbon-methods.md
+        - x10-validation-analysis.md
+    - part: "Part III — Management Science: Systematic Review & Meta-Analysis"
+      chapters:
+        - x11-systematic-review-protocol.md
+        - x12-meta-analytic-methods.md
+        - x13-results-by-theme.md
+        - x14-evidence-map-gaps.md
+    - part: "Part IV — Integration"
+      chapters:
+        - x15-linking-stocks-management.md
+        - x16-limitations-uncertainty.md
+        - x17-conclusions.md
+        - x18-data-code-availability.md
+        - x19-references.md
+  references: references.bib
+
+format:
+  html:
+    theme: cosmo
+    toc: true
