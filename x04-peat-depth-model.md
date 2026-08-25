@@ -30,7 +30,7 @@ random cross-validation results:
 | DEPTH_XGB_V2 | 0.28 | 0.41 | ~75 cm | ~67 cm |
 | DEPTH_LGBM_V2 | 0.29 | 0.43 | ~74 cm | ~66 cm |
 
-LightGBM led on every metric before hyperparameter tuning, and stayed as the winner after tuning:
+LightGBM led on every metric both before and after hyperparameter tuning:
 
 | Model | Spatial R² (tuned) |
 |---|---|
@@ -45,4 +45,78 @@ optimizing directly for spatial CV R². Final production metrics for `DEPTH_LGBM
 - **Random R²:** 0.4273
 - **Spatial MAE:** 74.6 cm
 - **Random MAE:** 66.1 cm
+
+### Feature selection and retained/excluded covariates
+
+Depth uses the same two-stage feature reduction as probability, a Pearson
+correlation filter (|r| ≥ 0.90) followed by Recursive Feature Elimination (RFE) applied to the remaining covariate stack: 143 features → 37 after selection
+
+Same as the probability workflow, RFE-selected features are used for the Random Forest model only; XGBoost and LightGBM are trained on the full correlation-filtered feature set, since
+boosting models handle correlated features internally.
+
+The depth model shares the probability model's exclusion list (`quaternary_geology`,
+`pennockLandformClass`, `geomorphons`, `gNATSGO`, `histosols`,
+`npc_peatland_indicator`) for the same reasons (polygon artifacts and circular
+logic) with one exception:
+
+> `MN_organic_soils_classified_FIXED_snapped` is retained for depth even though excluded
+> for probability. This layer is a peat classification product, which makes it
+> circular for the probability task (predicting if peat exists using a map that
+> already says where peat is). But for depth regression training is already
+> restricted to pixels the probability model has identified as peat, so using organic
+> soil classification detail to help predict how thick the peat is in the already created
+> extent is not circular in the same way.
+
+
+## 4.3 Spatial Cross-Validation
+The same 50 km block spatial cross-validation scheme used for probability (Ch. 3.3)
+is applied to depth. The gap between random and spatial R² is substantially larger for
+depth (0.4273 vs. 0.2925, a spread of 0.13) than it was for probability. This pattern is stable across other model versions. In the earlier RF model comparisons LightGBM's spatial R² was 0.2991 against a random R² of 0.6206.
+
+## 4.4 Outputs and Accuracy
+
+### Depth surface
+
+The statewide depth prediction was finalized as a Cloud-Optimized GeoTIFF:
+
+- **Format:** `uint16`, 1:1 scale (pixel value = depth in cm)
+- **Nodata:** 65535
+- **Observed maximum:** 490 cm
+
+All negative depth predictions are clipped to zero at inference (depth cannot be physically negative and gradient boosting/GAM/SVM-style regressors can produce small negative values near zero)
+
+### Statewide depth distribution
+
+| Statistic | Value |
+|---|---|
+| Mean | 138.3 cm |
+| Median | 131.0 cm |
+| Std. dev. | 44.9 cm |
+| Maximum | 490.0 cm |
+| % of peatland pixels > 100 cm | 79.3% |
+| % of peatland pixels > 200 cm | 9.5% |
+| % of peatland pixels > 300 cm | 0.4% |
+
+| Depth class | Pixel count | % of peatland area |
+|---|---|---|
+| 0–50 cm | 343,579 | 0.1% |
+| 50–100 cm | 59,894,884 | 19.6% |
+| 100–200 cm | 215,652,211 | 70.5% |
+| 200–300 cm | 28,552,931 | 9.3% |
+| 300–500 cm | 1,248,987 | 0.4% |
+
+The large majority of mapped peatland (70.5%) falls in the 100–200 cm depth class,
+and depths beyond 300 cm are rare (0.4% of pixels) but present.
+
+### Known limitation: deep-peat ceiling effect
+
+LightGBM regression predictions are capped at ~366 cm, even though the
+model was trained on depth observations up to 490 cm and the statewide output
+includes some pixels at that observed maximum. This is a property of tree-ensemble regression where LightGBM predicts the mean target value of the training observations that land in each leaf, and rare deep peat profiles (at the tail of the depth distribution) get averaged together with shallower neighbors during training, particularly given the tuned `min_child_samples = 90` constraint, which requires a larger minimum sample count per leaf and further promotes averaging. This means the deepest peat deposits in Minnesota are likely
+underpredicted by the current statewide map.
+
+### Downstream role
+
+The depth surface feeds directly into the below-ground carbon stock calculation
+(Ch. 6), where it is combined with bulk density and carbon percent to estimate carbon mass.
 
