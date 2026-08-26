@@ -45,9 +45,9 @@ The covariate stack was reduced in two separate stages before model training:
 
 ### Feature exclusions
 
-Certain covariates were excluded from training regardless of the feature section outcomes.
+Certain covariates were excluded from training regardless of the feature selection outcomes.
 
-- **Circular logic** Layers that are peat classification products themselves (`histosols`, `npc_peatland_indicator`, gNATSGO organic-soil layers) were found to inflate model results by creating a reference map rather than learning to predict the landscape. An example of this is an early random forest model run that included these layers scored AUC = 0.994 which demonstrates circularity and not actual predictive power.
+- **Circular logic** Layers that are peat classification products themselves (`histosols`, `npc_peatland_indicator`, gNATSGO organic-soil layers) were found to inflate model performance metrics by creating a reference map of peat layers rather than learning to predict the landscape. An example of this is an early random forest model run that included these layers scored AUC = 0.994 which shows circularity and not actual predictive power.
 - **Polygon artifacts** one-hot encoded categorical layers (`quaternary_geology`,
   `pennockLandformClass`, `geomorphons`) resulted in edge affects in the spatial
   inference outputs that traced drawn polygon boundaries. Dropping these layers cost minimal AUC (~0.002 in the initial random forest comparison) for a noticable gain in visual performance.
@@ -58,12 +58,10 @@ Certain covariates were excluded from training regardless of the feature section
 Two cross-validation methods were run for every model in this project and
 both are reported.
 
-**Random cross-validation** (stratified 5-fold KFold, shuffled) was used as the conventional validation approach. However, because random grouping can place geographically close observations in both training and validation folds, the model can use spatially correlated observations which may cause interpolation to happen resulting in artificially high performance estimates.**run on sentence**
+**Random cross-validation** (stratified 5-fold KFold, shuffled) was used as the conventional validation approach. However, because random grouping can place spatially close observations in both the training and validation folds, the model can use these correlated observations which resulst in artificially high performance estimates.
 
 
-
-**Spatial block cross-validation** is used as the primary decision making metric.
-The state of Minnesota was divided into a 50 km × 50 km grid with all points in the same grid block being placed in the same fold. Blocks are then distributed across 5 folds. 
+**Spatial block cross-validation** is used as the primary decision making metric. The state of Minnesota was divided into a 50 km × 50 km grid with all points in the same grid block being placed in the same fold. Blocks are then distributed across 5 folds. 
 ```
 block_x = floor(easting / 50000)
 block_y = floor(northing / 50000)
@@ -74,8 +72,7 @@ block_id = block_x * 10000 + block_y
 Because an entire 50 km block is withheld at once, the model cannot always use nearby
 training points during validation. This produces a lower but more accurate estimate of mapping. 
 
-The difference between random and spatial CV scores also helps to quantify the degree of spatial autocorrelation that exists (For reference, the gap is substantially larger for peat depth than for peat presence, ~0.29 spatial vs. ~0.43 random R² for the depth model)
-
+The difference between random and spatial CV scores also helps to quantify the degree of spatial autocorrelation that exists (For example, the gap between the two is substantially larger for peat depth than for peat presence, ~0.29 spatial vs. ~0.43 random R² for the depth model)
 
 ## 3.4 Outputs & Accuracy
 
