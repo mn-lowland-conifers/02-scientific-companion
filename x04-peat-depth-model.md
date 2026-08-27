@@ -9,8 +9,8 @@ and depth then estimates how thick peat is within that masked area.
 
 The target, `depb`, is peat depth in centimeters. Depth is a masked regression problem where rather than training on the full point set, the model is trained only on locations that (1) have a measured depth greater than zero and (2) fall within the probability model's peat mask.
 
-This two stage approach was established after finding that training the depth model on the
-full point set (including 0 cm non-peat observations) produced deceptively high R² values (~0.70) and predicted lower peat depths closer to the median. This result was misleading because the model was learning to separate 0 cm depth from non-zero depth points, not actually predicting depth within peatlands. Restricting to training points already known to contain peat corrects this issue and gives a better measure of how well the model estimates peat depth.
+This two stage approach was implemted after finding that training the depth model on the
+full point set (including 0 cm non-peat observations) produced falsely high R² values (~0.70) and predicted lower peat depths closer to the median. This result was misleading because the model was learning to separate 0 cm depth from non-zero depth points, not actually predicting depth within peatlands. Restricting to training points that were already known to contain peat corrected the issue and gives a better measure of how well the model estimates peat depth.
 
 **Masking rule:** `depb > 0` AND `PROB_LGBM_V2 ≥ 0.362`. This comes from the probability model's threshold selection (Ch. 3) which was used to define statewide peatland extent and also defines which points train the depth model.
 
@@ -49,29 +49,27 @@ optimizing directly for spatial CV R². Final production metrics for `DEPTH_LGBM
 ### Feature selection and retained/excluded covariates
 
 Depth uses the same two-stage feature reduction as probability, a Pearson
-correlation filter (|r| ≥ 0.90) followed by Recursive Feature Elimination (RFE) applied to the remaining covariate stack: 143 features → 37 after selection
+correlation filter (|r| ≥ 0.90) followed by Recursive Feature Elimination (RFE) was applied to the remaining covariate stack: 143 features → 37 after selection
 
-Same as the probability workflow, RFE-selected features are used for the Random Forest model only; XGBoost and LightGBM are trained on the full correlation-filtered feature set, since
-boosting models handle correlated features internally.
+Same as the probability workflow, RFE-selected features are used for the Random Forest model only; XGBoost and LightGBM are trained on the full correlation-filtered feature set, since boosting models handle correlated features internally.
 
 The depth model shares the probability model's exclusion list (`quaternary_geology`,
 `pennockLandformClass`, `geomorphons`, `gNATSGO`, `histosols`,
 `npc_peatland_indicator`) for the same reasons (polygon artifacts and circular
 logic) with one exception:
 
-> `MN_organic_soils_classified_FIXED_snapped` is retained for depth even though excluded
-> for probability. This layer is a peat classification product, which makes it
-> circular for the probability task (predicting if peat exists using a map that
-> already says where peat is). But for depth regression training is already
-> restricted to pixels the probability model has identified as peat, so using organic
-> soil classification detail to help predict how thick the peat is in the already created
-> extent is not circular in the same way.
+> `MN_organic_soils_classified_FIXED_snapped` is kept for depth modeling even though it was excluded
+> for probability. Because this layer is a peat classification product it is 
+> circular for the probability prediction (predicting if peat exists using a layer that
+> says where peat is). But because the depth regression training is restricted 
+> to the mask of pixels already identified as peat, using organic
+> soil classification to predict how thick the peat is is not circular in the same way
 
 
 ## 4.3 Spatial Cross-Validation
-The same 50 km block spatial cross-validation scheme used for probability (Ch. 3.3)
+The same 50 km block spatial cross-validation schema used for probability (Ch. 3.3)
 is applied to depth. The gap between random and spatial R² is substantially larger for
-depth (0.4273 vs. 0.2925, a spread of 0.13) than it was for probability. This pattern is stable across other model versions. In the earlier RF model comparisons LightGBM's spatial R² was 0.2991 against a random R² of 0.6206.
+depth (0.4273 vs. 0.2925) than it was for probability. This pattern is consistant across other model versions. In the earlier RF model comparisons LightGBM's spatial R² was 0.2991 against a random R² of 0.6206.
 
 ## 4.4 Outputs and Accuracy
 
@@ -83,7 +81,7 @@ The statewide depth prediction was finalized as a Cloud-Optimized GeoTIFF:
 - **Nodata:** 65535
 - **Observed maximum:** 490 cm
 
-All negative depth predictions are clipped to zero at inference (depth cannot be physically negative and gradient boosting/GAM/SVM-style regressors can produce small negative values near zero)
+All negative depth predictions are clipped to zero at inference (depth cannot be a negative number and gradient boosting/GAM/SVM regressors can result in small negative values near zero)
 
 ### Statewide depth distribution
 
