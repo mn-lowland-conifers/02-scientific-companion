@@ -60,11 +60,11 @@ Input vector layers for this step were DNR HydroFeatures (lakes), DNR RiversStre
 
 ### 2.2.3 Imagery
 
-**Sentinel-2** imagery (`COPERNICUS/S2_SR_HARMONIZED`, 2019–2024) was composited using Google Earth Engine (GEE) into three seasonal medians: spring (April–May), summer (June–August), and fall (September–October). Cloud masking was performed using the SCL layer (excluding cloud shadow, medium/high cloud, and thin cirrus classes) and a pre-filter dropping
+**Sentinel-2** imagery (COPERNICUS/S2_SR_HARMONIZED, 2019–2024) was composited using Google Earth Engine (GEE) into three seasonal medians: spring (April–May), summer (June–August), and fall (September–October). Cloud masking was performed using the SCL layer (excluding cloud shadow, medium/high cloud, and thin cirrus classes) and a pre-filter dropping
 images with >30% cloud cover. Spring and fall composites also masked snow and ice.
 Each of the three seasonal composites contains 10 raw bands (B02–B08A, B11, B12) plus
 two derived indices:
-**NDVI** `(B08−B04)/(B08+B04)` shows vegetation health and density
+**NDVI** (B08−B04)/(B08+B04) shows vegetation health and density
 **SWDI** (from green/B03 and red-edge-1/B05) shows soil moisture sensitivity
 
 **Tasseled Cap** transformations (Brightness/TCB, Greenness/TCG, and Wetness/TCW) were
