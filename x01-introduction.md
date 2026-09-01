@@ -2,12 +2,7 @@
 
 ## Purpose
 
-This document is the scientific companion to the Lowland Conifer Legislative report. It is organized around the findings of this project and their meaning, how it compares to and is supported by existing peatland carbon literature, and what it means for management of
-peatlands on Minnesota School Trust and other lands.
-
-The Scientific Companion is organized in two parts.
-
-**Part I — Statewide Peatland Carbon: Digital Soil Mapping**
+This document is the scientific companion to the Lowland Conifer Legislative report. It goes over the findings of this project and how those findings compare to and are supported by existing peatland carbon literature, and what it means for management of peatlands on Minnesota School Trust and other lands.
 
 - Ch. 2 — Data and Covariates
 - Ch. 3 — Peatland Probability Model
@@ -18,9 +13,6 @@ The Scientific Companion is organized in two parts.
 - Ch. 8 — Above-Ground Carbon Methods
 - Ch. 9 — Below-Ground Carbon Methods
 - Ch. 10 — Validation Analysis
-
-**Part II — Systematic Review and Meta-Analysis**
-
 - Ch. 11 — Systematic Review Protocol
 - Ch. 12 — Meta-Analytic Methods
 - Ch. 13 — Results by Theme
