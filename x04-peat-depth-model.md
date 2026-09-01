@@ -34,9 +34,9 @@ LightGBM led on every metric both before and after hyperparameter tuning:
 
 | Model | Spatial R² (tuned) |
 |---|---|
-| DEPTH_RF_V2_TUNED | 0.2731 |
-| DEPTH_XGB_V2_TUNED | 0.2885 |
-| **DEPTH_LGBM_V2_TUNED (final)** | **0.2925** |
+| DEPTH_RF_TUNED | 0.2731 |
+| DEPTH_XGB_TUNED | 0.2885 |
+| **DEPTH_LGBM_TUNED (final)** | **0.2925** |
 
 Tuning was performed with Optuna (TPE sampler, 50 trials per model, fixed seed),
 optimizing directly for spatial CV R². Final production metrics for `DEPTH_LGBM_V2_TUNED`:
