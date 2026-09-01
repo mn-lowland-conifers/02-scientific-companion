@@ -1,5 +1,6 @@
 # 7. Field Campaign Design
 
+**Should the soil protocol and veg protocol be split up and included in sections 8 and 9 or stay here?? With 7 focusing on how specific sites were selected**
 
 ## Sections to cover
 - 7.1 Sampling design
