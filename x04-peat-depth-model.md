@@ -26,9 +26,9 @@ random cross-validation results:
 
 | Model | Spatial R² | Random R² | Spatial MAE | Random MAE |
 |---|---|---|---|---|
-| DEPTH_RF_V2 | 0.27 | 0.38 | ~76 cm | ~69 cm |
-| DEPTH_XGB_V2 | 0.28 | 0.41 | ~75 cm | ~67 cm |
-| DEPTH_LGBM_V2 | 0.29 | 0.43 | ~74 cm | ~66 cm |
+| DEPTH_RF | 0.27 | 0.38 | ~76 cm | ~69 cm |
+| DEPTH_XGB | 0.28 | 0.41 | ~75 cm | ~67 cm |
+| DEPTH_LGBM | 0.29 | 0.43 | ~74 cm | ~66 cm |
 
 LightGBM led on every metric both before and after hyperparameter tuning:
 
