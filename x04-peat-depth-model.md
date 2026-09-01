@@ -51,19 +51,19 @@ optimizing directly for spatial CV R². Final production metrics for `DEPTH_LGBM
 Depth uses the same two-stage feature reduction as probability, a Pearson
 correlation filter (|r| ≥ 0.90) followed by Recursive Feature Elimination (RFE) was applied to the remaining covariate stack: 143 features → 37 after selection
 
-Same as the probability workflow, RFE-selected features are used for the Random Forest model only; XGBoost and LightGBM are trained on the full correlation-filtered feature set, since boosting models handle correlated features internally.
+Same as the probability workflow, RFE-selected features are used for the Random Forest model only. XGBoost and LightGBM are trained on the full correlation-filtered feature set because the boosting models handle correlated features internally.
 
 The depth model shares the probability model's exclusion list (`quaternary_geology`,
 `pennockLandformClass`, `geomorphons`, `gNATSGO`, `histosols`,
 `npc_peatland_indicator`) for the same reasons (polygon artifacts and circular
-logic) with one exception:
+logic) with an exception:
 
 > `MN_organic_soils_classified_FIXED_snapped` is kept for depth modeling even though it was excluded
 > for probability. Because this layer is a peat classification product it is 
 > circular for the probability prediction (predicting if peat exists using a layer that
 > says where peat is). But because the depth regression training is restricted 
-> to the mask of pixels already identified as peat, using organic
-> soil classification to predict how thick the peat is is not circular in the same way
+> to the mask that was already identified as peat, using organic
+> soil classification to predict how thick the peat is is not circular.
 
 
 ## 4.3 Spatial Cross-Validation
