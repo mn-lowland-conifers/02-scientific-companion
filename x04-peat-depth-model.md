@@ -106,7 +106,7 @@ All negative depth predictions are clipped to zero at inference (depth cannot be
 The large majority of mapped peatland (70.5%) falls in the 100–200 cm depth class,
 and depths beyond 300 cm are rare (0.4% of pixels) but present.
 
-### Limitation: deep peat ceiling effect
+### Limitation: Deep peat
 
 LightGBM regression predictions are capped at ~366 cm, even though the model was trained on depth observations up to 900 cm and the statewide output includes some pixels at that observed maximum. This is a property of tree-ensemble regression where LightGBM predicts the mean target value of the training observations that land in each leaf, and rare deep peat profiles (at the tail of the depth distribution) get averaged together with shallower neighbors during training, particularly given the tuned `min_child_samples = 90` constraint, which requires a larger minimum sample count per leaf and further promotes averaging. This means the deepest peat deposits in Minnesota are likely underpredicted by the current statewide map.
 
