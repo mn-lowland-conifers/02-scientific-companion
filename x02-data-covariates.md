@@ -28,7 +28,7 @@ model the resulting dataset trains, producing three separate point CSVs:
 
 ### 2.2.1 Computing Environment and Reference Grid
 
-All covariate processing and model training was performed on the Minnesota Supercomputing Institute (MSI) Agate cluster (AMD EPYC, SLURM batch scheduling). A conda environment (gdalenvgeospat) was created to include geospatial libraries such as GDAL, rasterio, fiona, pyproj, shapely as well as machine learning packages scikit-learn, XGBoost, LightGBM, Optuna that were not previously available on MSI environments.
+All covariate processing and model training was performed on the Minnesota Supercomputing Institute (MSI) Agate cluster (AMD EPYC, SLURM batch scheduling). A conda environment (gdalenvgeospat) was created to include geospatial libraries such as GDAL, rasterio, fiona, pyproj, shapely as well as machine learning packages scikit-learn, XGBoost, LightGBM, and Optuna that were not available on MSI environments.
 
 Every covariate is aligned to a reference grid (gNATSGO 10m MUKEY) using `gdalwarp` with bilinear resampling for the continuous covariates and nearest-neighbor for categorical covariates.
 
