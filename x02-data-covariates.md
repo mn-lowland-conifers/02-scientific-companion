@@ -19,7 +19,7 @@ The three data sources were combined and filtered depending on which
 model the resulting dataset trains, producing three separate point CSVs:
 
 | Dataset | Target | Current N |
-|---|---|---|
+|---|---|---:|
 | Probability | `peat_binary` (1/0) | 57,134 |
 | Depth | `depb` (cm) | 8,223 |
 | Composition | `Fibric/Hemic/Sapric/Mineral_pct` | 18,041 |
