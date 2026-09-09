@@ -47,6 +47,8 @@ prioritized points are covered by black spruce lowlands, tamarack, and muskeg co
 types. These points also provide a good distribution of ages and densities (BA/acre),
 including some nonforested areas.
 
+![Map 1. Locations of sites visited during the 2025 field season](figures/x07_2025_field_map.png)
+
 ## 7.3 Preparation
 
 Sample bags will be pre-labeled before field work with a unique sample ID. The
