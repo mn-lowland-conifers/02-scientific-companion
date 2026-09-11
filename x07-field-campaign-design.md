@@ -8,175 +8,103 @@
 
 # 7 Field Campaign Design
 
-The goal of this project is to assess peat depth across Minnesota on state school
-trust land. Historic peat depth data will be used alongside field data collected
-during the summer of 2025 to develop a machine learning model to create a map of
-peat depth across the state.
+In the summer of 2025, a field campaign was run to measure peat depth, collect peat samples, and gather vegetation data on school trust land across
+the state of Minnesota. 
 
-## 7.1 Equipment & Materials
+## 7.1 Site Selection
 
-- Russian peat auger with extensions
-- Tile probe with extensions
-- Gutter or PVC pipe
-- Slide hammer
-- Sample bags
-- Rite in Rain description sheet
-- Rite in Rain sample sheet
-- GPS (phone – onX)
-- Camera (phone & drone)
-- Putty knife
-- Pruner
-- Tape measure
-- Clip board
-- Plot center poles
-- Serrated bread knife
-- pH pen
-- Cable ties
+Sites for the project were selected carefully to maximize the use of one field season. First, existing legacy data, largely from sites sampled in the Minnesota Peat Inventory, was visualized to ensure that duplicate sites would not be revisited during our own campaign. Then, land under state school trust ownership was overlaid with the DNR potentially wet histosol layer (organic soils where peat is likely to exist) to identify sites that existed on trust land and were likely to be peatlands. A new layer was created from these overlapping areas, and 380 potential sampling locations were selected.
 
-## 7.2 Point Selection
+To further narrow down the selection, 97 prioritized points were subsetted from the list of 380 based on their existing covertype attribute from the Minnesota DNR forest inventory. The prioritized points are covered by black spruce lowland, tamarack, and muskeg cover types. These points also provide a good distribution of ages and densities (BA/acre), including some nonforested areas.
 
-Legacy data from the Minnesota Peat Inventory was visualized to ensure duplicate
-sites were not sampled. New sampling sites were then selected by overlaying a
-shapefile of land under state school trust ownership with a layer of soils mapped as
-histosols (organic soils where peat is likely to exist). A new layer was created from
-these overlapping areas, and 380 potential sampling locations were selected.
-
-To further narrow down the selection, 97 prioritized points were subsetted from the
-list of 380 based on their covertype attribute from the Minnesota DNR inventory. The
-prioritized points are covered by black spruce lowlands, tamarack, and muskeg cover
-types. These points also provide a good distribution of ages and densities (BA/acre),
-including some nonforested areas.
 
 ![Map 1. Locations of sites visited during the 2025 field season](figures/x07_2025_field_map.png)
 
-## 7.3 Preparation
 
-Sample bags will be pre-labeled before field work with a unique sample ID. The
-sample ID will increase numerically starting at P001. The sample IDs will be
-associated with sites on the field sampling sheet. Horizon depth and date of sampling
-will be written on the bags in the field.
+## 7.2 Site and Transect Establishment
 
-*Reference: `Peat Sampling Sheet.xlsx`*
+After sites were selected, a line, or transect, was drawn across the peatland from end to end. Points were dropped along this transect line with 50–200m between points, depending on the size of the transect, with larger peatlands having larger distances between transect points.
 
-## 7.4 Site and Transect Establishment
+The onX Hunt smartphone app was used as a GPS and could store and update points offline, as well as serve as a GPS to navigate to selected points. In addition to being used as a GPS, the app also shows land ownership, which was used to verify that the crew remained on public land while traversing peatlands.
 
-The onX Hunt smartphone app will be used as a GPS to navigate to selected sites. In
-addition to being used as a GPS, the app also shows land ownership, which will be
-used to verify that the crew remains on public land while traversing to points.
+Sites were identified using the following naming convention:
 
-Throughout the field season, sites will use the naming convention:
-
-```
-2025MN(3-digit county fips code)xxx
+```text
+2025MN(3-digit county FIPS code)(site ID)-(transect point ID)
 ```
 
-For example, the second site in Ramsey County would be named `2025MN123002`.
+For example, the name of the second point on site 5 in Ramsey County would be `2025MN123005-02`.
 
-At each site, a transect line will be established across the peatland with a
-50–200 m distance between transect points.
+## 7.3 Plot Establishment
 
-The vegetation crew will randomly establish a plot center with a center pole. The
-soil team will record 3 peat depth measurements at a 5 meter distance from the plot
-center at 60°, 180°, and 300°. The depth measurement procedure can be found in
-§7.6.
+Once a point on a transect was reached using GPS navigation, a plot center was established with a center pole. The plot center served as a reference location from which site data were collected.
+To measure peat depth at the transect point, three peat depth measurements were taken at a 5m distance from the plot center at 60°, 180°, and 300°. A more detailed procedure can be found in §7.5.
 
-## 7.5 Full Description Procedure
+## 7.4 Pedon Description
 
 *Reference: `ORGANIC DESCRIPTION FORM.xlsx`*
 
-Along each transect line, 2–3 full description points of peat will be recorded. A
-Russian peat auger will be used to extract a core.
+Along each transect line, 2–3 points received a full soil observation description. A Russian peat auger was used to extract the peat core and properties such as depth, horizonation, color, and decomposition state
+was recorded on the Organic Description Form, along with information such as ID, GPS coordinates, date, time, and sampling personnel.
 
-After the point has been selected and marked, a recorder will write down site
-information on the Organic Description Form, including site ID, GPS coordinates,
-date, time, and sampling personnel.
+## 7.5 Sampling Procedure
 
-Take a video recording of the site with narration of site characteristics and any
-other information deemed necessary. A DJI Mini 3 drone will also be flown to capture
-additional aerial photography of the site from a 20 m elevation.
+The first step in sampling an organic soil was to extract a core using a Russian peat auger.
 
 ### Core Extraction
 
-Position the Russian peat auger at the designated sampling point and insert
-vertically into the peat, minimizing disturbance to the sampling point as much as
-possible. Drive the auger into the ground until the auger head is flush with the
-surface. Once the auger is in position:
+The Russian peat auger was positioned at the designated sampling point and inserted vertically into the peat, minimizing disturbance to the sampling point as much as possible. The auger was driven into the ground until the auger head was flush with the surface. Once the auger was in position:
 
-- Rotate the auger handle 180° to collect a half-cylinder peat sample
-- Remove the auger vertically using auger pullers
-- Once extracted, rotate the auger head back to the open position to access the
-  collected peat sample
+* Rotate the auger handle 180° to collect a half-cylinder peat sample.
+* Remove the auger vertically using auger pullers.
+* Once extracted, rotate the auger head back to the open position to access the collected peat sample.
 
-**If bagged samples will be collected from the core:**
+Continue extracting peat with the Russian auger until reaching the underlying mineral soil. For peat depths exceeding the auger length, extensions were attached using the hex pin to reach greater depths.
 
-- Cut the semicircular peat sample on the auger in half vertically
-- Place in labeled sample bag with sample number and record the depth of the sample
-- Record information in the next available row on the Peat Sampling Sheet
-- Designate the sample type column on the peat sample sheet with "Db" for intact
-  samples and "grab" for samples with a compromised volume
+### Sampling
 
-**For core description:**
-
-- Keep remaining peat that was not sampled intact on the auger
-- Transfer the peat carefully to the gutter using a putty knife, making sure to keep
-  depth intact
-- Arrange the peat vertically so the length of peat laid on the gutter corresponds
-  to borehole depth
-- Every few extractions, verify that peat length on the gutter matches the depth of
-  the borehole using a tape measure
-
-Continue extracting peat with the Russian auger until reaching the underlying
-mineral soil. Collect samples as appropriate throughout the process. For peat depths
-exceeding auger length, attach extensions using the hex pin to reach greater depths.
-The completed gutter will display vertically arranged peat cores representing the
-complete soil profile.
-
-### Description
-
-- Photograph the complete profile at 40 cm increments. Attempt to keep the entirety
-  of the profile in shade for the picture if possible.
-- Record an additional video with slow, continuous movement down the entire core
-  length.
-
-Complete a detailed profile description on the Organic Description Form documenting
-the following characteristics:
-
-- Top and bottom depths for each horizon
-- Horizon designation
-- Munsell color
-- Von Post humification score (H1–H10)
-- Fiber content percentage
-- Texture analysis and clay/sand percentages (when applicable for mineral
-  components)
-- Fragments, redox features, ped void characteristics
-- Whether the horizon was sampled
+Two types of peat samples were taken for this project: (1) bulk density samples and (2) grab samples. For bulk density samples, the dimensions of the sample must be known when the sample is taken. These dimensions were later used to calculate the bulk density of the soil in the lab. Grab samples were pulled from the pedon with the depth noted. These samples were used for a variety of analyses, such as decomposition state, pH, and carbon.
 
 *Reference: `Peat Sampling Sheet.xlsx`*
 
-## 7.6 Depth Measurement Procedure
+**If bagged samples were collected from the core:**
 
-In addition to full description points, depth measurements will also be taken
-across each transect using a tile probe. Insert the tile probe at each point and
-drive it down with a slide hammer attachment. Add extensions to the probe until the
-mineral soil has been reached. Once the mineral soil is hit, wrap a cable tie around
-the shaft of the probe at the surface and extract the probe. Measure the length of
-the tile probe from the tip of the auger head to the cable tie and record this as
-peat depth at that location.
+* Cut the semicircular peat sample on the auger in half vertically.
+* Place the sample in a labeled sample bag with the sample number and record the depth of the sample.
+* Record the information in the next available row on the Peat Sampling Sheet.
+* Designate the sample type column on the peat sample sheet with "Db" for intact samples and "grab" for samples with a compromised volume.
 
-## 7.7 Samples
+### Core Description
 
-After samples are taken, ensure that all bags are properly sealed and labeled. After
-fieldwork is completed each day, weigh samples and cross-check them on the Peat
-Sampling Sheet to ensure that all information is accurate. Open bags to start drying
-overnight until transportation back to campus at the end of the week.
+For core descriptions, the remaining peat that was not sampled was kept intact on the auger. The peat was carefully transferred to the gutter using a putty knife, making sure to keep the depth intact. The peat was arranged vertically so that the length of peat laid on the gutter corresponded to the borehole depth. Every few extractions, the peat length on the gutter was verified against the depth of the borehole using a tape measure. The completed gutter displayed vertically arranged peat cores representing the complete soil profile.
 
-## 7.8 Shifting Sites & Additional Selection
+### Description
 
-During the field season there were occasions when additional sites needed to be
-selected. Causes for additional sites were accessibility issues due to road
-construction and completing the predetermined sites for a given week. To select new
-sites, histosols within a drivable area from lodging locations were identified using
-SoilWeb. Public land ownership was then verified using the onX Hunt app.
+* Photograph the complete profile at 40 cm increments. Attempt to keep the entirety of the profile in shade for the picture if possible.
+* Record an additional video with slow, continuous movement down the entire core length.
+
+Complete a detailed profile description on the Organic Description Form documenting the following characteristics:
+
+* Top and bottom depths for each horizon
+* Horizon designation
+* Munsell color
+* Von Post humification score (H1–H10)
+* Fiber content percentage
+* Texture analysis and clay/sand percentages, when applicable for mineral components
+* Fragments, redox features, and ped void characteristics
+* Whether the horizon was sampled
+
+*Reference: `Organic Description Sheet.xlsx`*
+
+### Depth Measurement Procedure
+
+In addition to full description points, depth measurements were also taken across each transect using a tile probe. The tile probe was inserted at each point and driven down with a slide hammer attachment. Extensions were added to the probe until the mineral soil was reached. Once the mineral soil was hit, a cable tie was wrapped around the shaft of the probe at the surface and the probe was extracted. The length of the tile probe from the tip of the auger head to the cable tie was measured and recorded as the peat depth at that location.
+
+### Samples
+
+After samples were taken, all bags were properly sealed and labeled. After fieldwork was completed each day, samples were weighed and cross-checked on the Peat Sampling Sheet to ensure that all information was accurate. Bags were opened to begin drying overnight until transportation back to campus at the end of the week.
+
+
 
 ## Peatlands-Carbon-Soils Project, Vegetation Data Protocol: 2025
 
