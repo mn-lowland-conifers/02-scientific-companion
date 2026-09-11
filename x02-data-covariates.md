@@ -1,7 +1,7 @@
 # 2 Data and Covariates
 
 Each model in this project is created using two types of input. The first is the point
-observations that are used to train and validate the models, and the second is a statewide covariate raster stack that is used to train models at each of the point locations as well as to create the spatial predictions that become the final raster map product. This section goes over where this data came from and how it was prepared.
+observations that are used to train and validate the models, and the second is a statewide covariate raster stack that is used to train models at each of the point locations as well as to create the spatial predictions that become the final raster map product. This section covers the consolidation and preparation of this data.
 
 ## 2.1 Point Data
 
