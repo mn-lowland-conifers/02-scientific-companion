@@ -113,5 +113,5 @@ LightGBM regression predictions are capped at 366 cm, even though the model was 
 ### Downstream role
 
 The depth surface feeds directly into the below-ground carbon stock calculation
-(Ch. 6), where it is combined with bulk density and carbon percent to estimate carbon mass.
+(Ch. 6), where it is combined with peat inventory lab data to predict statewide carbon stock.
 
