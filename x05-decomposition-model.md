@@ -1,7 +1,7 @@
 # 5 Organic Decomposition Model
 
 The organic decomposition model predicts the composition of peat in the top
-meter of the soil profile as a percentage of four classes: Fibric, Hemic, Sapric, and Mineral. The probability model answers the question "is there peat here?" and the depth model answers "how thick is it?" The composition model is able to answer "how decomposed is it?" This distinction matters because more decomposed (Sapric) peat is denser and more carbon concentrated than less decomposed (Fibric) peat.
+meter of the soil profile as a percentage of four classes: fibric, hemic, sapric, and mineral. The probability model answers the question "is there peat here?" and the depth model answers "how deep is it?" The composition model is able to answer "how decomposed is it?" This distinction matters because more decomposed sapric peat is often denser and more carbon concentrated than lesser decomposed fibric peat.
 
 ## 5.1 Target Variable and Training Data
 

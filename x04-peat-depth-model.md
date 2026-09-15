@@ -3,18 +3,18 @@
 The peat depth model predicts continuous peat thickness (cm) across the peatland
 extent defined by the probability model (x03). It is the second stage of a
 two-stage workflow: probability first establishes where peat is likely to occur,
-and depth then estimates how thick peat is within that masked area.
+and depth then estimates how thick the peat is within that masked area.
 
 ## 4.1 Target Variable and Training Data
 
 The target, `depb`, is peat depth in centimeters. Depth is a masked regression problem where rather than training on the full point set, the model is trained only on locations that (1) have a measured depth greater than zero and (2) fall within the probability model's peat mask.
 
 This two stage approach was implemted after finding that training the depth model on the
-full point set (including 0 cm non-peat observations) produced falsely high R² values (~0.70) and predicted lower peat depths closer to the median. This result was misleading because the model was learning to separate 0 cm depth from non-zero depth points, not actually predicting depth within peatlands. Restricting to training points that were already known to contain peat corrected the issue and gives a better measure of how well the model estimates peat depth.
+full point set (including 0 cm non-peat observations) produced falsely high R² values (~0.70) and predicted lower peat depths closer to the median. This result was misleading because the model was learning to separate 0 cm depths from non-zero depth points, not actually predicting the depth within peatlands. Restricting the input to training points that were already known to contain peat corrected the issue and gives a better measure of how well the model estimates depth.
 
 **Masking rule:** `depb > 0` AND `PROB_LGBM_V2 ≥ 0.362`. This comes from the probability model's threshold selection (Ch. 3) which was used to define statewide peatland extent and also defines which points train the depth model.
 
-**Sample size:** applying this filter to the combined training CSV resulted in ~7,000 points. 
+**Sample size:** applying this filter to the combined training CSV resulted in 7,000 points used for depth model training. 
 
 ## 4.2 Algorithm and Training
 
@@ -39,7 +39,7 @@ LightGBM led on every metric both before and after hyperparameter tuning:
 | **DEPTH_LGBM_TUNED (final)** | **0.2925** |
 
 Tuning was performed with Optuna (TPE sampler, 50 trials per model, fixed seed),
-optimizing directly for spatial CV R². Final production metrics for `DEPTH_LGBM_V2_TUNED`:
+optimizing for spatial CV R². Final production metrics for `DEPTH_LGBM_V2_TUNED`:
 
 - **Spatial R²:** 0.2925
 - **Random R²:** 0.4273
@@ -49,21 +49,21 @@ optimizing directly for spatial CV R². Final production metrics for `DEPTH_LGBM
 ### Feature selection and retained/excluded covariates
 
 Depth uses the same two-stage feature reduction as probability, a Pearson
-correlation filter (|r| ≥ 0.90) followed by Recursive Feature Elimination (RFE) was applied to the remaining covariate stack: 143 features → 37 after selection
+correlation filter (|r| ≥ 0.90) followed by Recursive Feature Elimination (RFE) was applied to the remaining covariate stack. This reduced the original 143 features to 37 features after selection
 
 Same as the probability workflow, RFE-selected features are used for the Random Forest model only. XGBoost and LightGBM are trained on the full correlation-filtered feature set because the boosting models handle correlated features internally.
 
 The depth model shares the probability model's exclusion list (`quaternary_geology`,
 `pennockLandformClass`, `geomorphons`, `gNATSGO`, `histosols`,
 `npc_peatland_indicator`) for the same reasons (polygon artifacts and circular
-logic) with an exception:
+logic) with one exception:
 
 > `MN_organic_soils_classified_FIXED_snapped` is kept for depth modeling even though it was excluded
 > for probability. Because this layer is a peat classification product it is 
 > circular for the probability prediction (predicting if peat exists using a layer that
 > says where peat is). But because the depth regression training is restricted 
 > to the mask that was already identified as peat, using organic
-> soil classification to predict how thick the peat is is not circular.
+> soil classification to predict how thick the peat is was beneficial to the depth models, and not circular.
 
 
 ## 4.3 Spatial Cross-Validation
@@ -108,7 +108,7 @@ and depths beyond 300 cm are rare (0.4% of pixels) but present.
 
 ### Limitation: Deep peat
 
-LightGBM regression predictions are capped at ~366 cm, even though the model was trained on depth observations up to 900 cm and the statewide output includes some pixels at that observed maximum. This is a property of tree-ensemble regression where LightGBM predicts the mean target value of the training observations that land in each leaf, and rare deep peat profiles (at the tail of the depth distribution) get averaged together with shallower neighbors during training, particularly given the tuned `min_child_samples = 90` constraint, which requires a larger minimum sample count per leaf and further promotes averaging. This means the deepest peat deposits in Minnesota are likely underpredicted by the current statewide map.
+LightGBM regression predictions are capped at 366 cm, even though the model was trained on depth points that reached up to 900cm. This is a property of tree-ensemble regression where LightGBM is predicting the mean target value of the training points in each leaf, and the rarer deep peat observations get averaged together with shallower neighbor observations during training. Additionally, the tuned `min_child_samples = 90` constraint requires a larger minimum sample count per leaf and further promotes averaging. This means that the deepest peat deposits in Minnesota are likely being underpredicted by the statewide inference map.
 
 ### Downstream role
 
