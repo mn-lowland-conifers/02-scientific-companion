@@ -68,7 +68,7 @@ two derived indices:
 **SWDI** (from green/B03 and red-edge-1/B05) shows soil moisture sensitivity
 
 **Tasseled Cap** transformations (Brightness/TCB, Greenness/TCG, and Wetness/TCW) were
-computed on MSI by applying coefficients to the Sentinel-2 bands. Outputs were checked against expected correlations (positive Brightness–Greenness correlation, negative Brightness–Wetness)
+computed from sentinal-2 imagery on MSI by applying specific coefficients developed by Shi and Xu (2019). The outputs were then checked against expected correlations (positive Brightness–Greenness correlation, negative Brightness–Wetness)
 
 **Sentinel-1 SAR** data was composited from GEE. Each seasonal composite provides three bands: VV (dB), VH (dB), and the VV/VH ratio
 
