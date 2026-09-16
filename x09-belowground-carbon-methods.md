@@ -32,3 +32,24 @@ Rubber Fiber was assessed twice both in the field in an lab:
 - Lab: fiber content (%) via the rubbed fiber method, converted to fibric/hemic/sapric 
 
 ## 9.4 Profile Carbon Stock
+
+### Pedon Eligibility
+
+A pedon qualifies for use in the carbon stock calculation if it meets either of 2 criteria:
+
+- **Criteria A** — observed peat depth of ≥ 100 cm, with complete SOC% and bulk
+  density (measured or class-mean gap-filled) on all organic horizons in the
+  profile
+- **Criteria B** — A definitive bottom of organic material is observed (mineral or limnic layer underlying organics)
+  which means the full peat profile was captured, and complete SOC% and bulk density on all organic horizons.
+
+**3,828** pedons meet one of these two criteria and make up the data set for carbon stock estimation. Of these, 1,609 meet Criterion B specifically (a
+definitive bottom of organic) which is the subset data for the full-profile carbon stock model
+
+### Stock integration
+
+For each eligible pedon carbon stock is calculated by horizon by multipling the depth increment × bulk density × SOC fraction, and then summed across all organic
+horizons in the profile. This per pedon stock is the variable used to fit the statewide full-profile carbon stock model (Ch. 6.)
+
+
+
