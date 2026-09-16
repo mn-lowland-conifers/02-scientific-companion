@@ -11,7 +11,7 @@ Training and validation observations are compiled from three primary sources:
 
 - **Minnesota Peat Inventory** is a dataset collected by the Minnesota DNR during the 1970’s and 80’s. It contains probe measurement peat depths across peatlands in Minnesota as well as laboratory analyzed data including von post decomposition class, bulk density, carbon content, ash content, among other metrics at a horizon level. 
 - **NASIS pedon data** is the USDA’s Natural Resource Conservation Services data set that populates soil survey. The dataset contains soil profile descriptions of both mineral and organic soils across the country 
-- **Minnesota Biological Survey (MBS)** contributes presence and absence observations derived from native plant community classifications where peat associated community types were coded as peat present and upland or non peat communities were coded as peat absent. 
+- **Minnesota Biological Survey (MBS)** releve dataset contributes presence and absence observations derived from native plant community classifications where peat associated community types were coded as peat present and non peat (upland) communities were coded as peat absent. 
 
 ### 2.1.2 Curation by Model Type
 
