@@ -25,7 +25,7 @@ To frame the question about water quality in a way to measure outcomes, this met
 The population of this analysis is lowland conifer dominated peatlands and forested wetlands, with a primary focus on black spruce and tamarack stands and a secondary focus on northern white cedar and black ash swamps. Studies geographically come out of the north central United States and southern Canada, with studies taking place in Minnesota being the primary target.
 
 The intervention is any event that removes the overstory, including but not limited to methods such as clearcutting, stripcutting, shelterwood cuts, partial cuts, precommercial thinning, group
-selection, or girdling. Drainage only treatments are kept in the review as well, but they are coded as a separate category from harvest since drainage changes hydrology mechanically while harvest changes it by removing trees, which are two different pathways to the same kind of outcome. 
+selection, or girdling. Drainage only treatments are kept in the review but they are coded as a separate category from harvest.
 
 The comparator is an uncut control, a pre-treatment period at the same site, or an older age class where a study used a chronosequence design instead of a before and after comparison.
 
