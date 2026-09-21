@@ -34,9 +34,8 @@ The raster and field measurements fall in the same depth bin at 26% of sites. Ag
 
 ![Confusion matrix](figures/x11_depb_confusion.png)
 
-Field validation of the depth model (n = 123).
-:::
+Field validation of the depth model (n = 123)
 
-- **Scatter plot:** Points sit around the 80–270cm mark across the observed range and no point reaches the 1:1 line above 270 cm.
-- **Boxplot:** The raster median stays at 115–160 cm in every observed bin. The raster's overall range is 76–270 cm, and sites in the observed 300+ cm bin still receive a median prediction of about 160 cm.
+- **Scatter plot:** Points sit around the 80–270cm mark across the predicted range and no point reaches the 1:1 line above 270 cm.
+- **Boxplot:** The raster median stays at 115–160 cm in every predicted bin. The raster's overall range is 76–270 cm, and sites in the observed 300+ cm bin still receive a median prediction of about 160 cm.
 - **Confusion matrix:** Nearly all sites land in the 100–200 cm predicted column. All 27 sites deeper than 300 cm are predicted below 300 cm, and 19 of them fall in the 100–200 cm bin.
