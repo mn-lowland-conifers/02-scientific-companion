@@ -23,7 +23,7 @@ Modeled peat depth was compared with the field measured depth data from 123 site
 
 ### Bin agreement
 
-The raster and field measurements fall into the same depth bin in 26% of all sites. The within 50cm numbers look decent which is mainly due to the raster predicted values sitting around the mean of the training data set on the 100–200cm bin. The Spearman rank correlation between observed and predicted depth is 0.08 (p = 0.40), so there is no evidence that the deeper sites are getting higher predicted depth values.
+The raster and field measurements fall in the same depth bin at 26% of sites. Agreement within one bin is 76%, but this is mainly because the raster predictions cluster in the 100–200cm bin, which is next to two other bins. The Spearman rank correlation between observed and predicted depth is 0.08 (p = 0.40), so there is no evidence that deeper sites receive higher predicted depths.
 
 ### Figures
 
