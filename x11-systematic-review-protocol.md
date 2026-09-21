@@ -42,21 +42,3 @@ Tier D has three studies on rooting depth, transpiration response to water table
 
 ## 11.3 Search Strategy
 
-Searches ran across Web of Science Core Collection, Scopus, Agricola,
-TreeSearch, and CAB Abstracts, and a separate pass through grey literature
-sources that were likely to hold relevant work that was never published in a journal:
-Minnesota DNR, the Minnesota Forest Resources Council, the Minnesota
-Environment and Natural Resources Trust Fund, Canadian Forest Service COFRDA
-and NODA reports, Ontario's Ministry of Natural Resources and Forestry, and
-Quebec's Ministère des Ressources naturelles et des Forêts.
-
-The search string combined a wetland-type block, a species block, a
-harvest-terms block, and a hydrology-outcome block. This search criteria was slightly adapted for each database depending on the syntax.
-
-> (peatland OR bog OR fen OR swamp OR "forested wetland" OR muskeg OR
-> lowland) AND ("black spruce" OR *Picea mariana* OR tamarack OR *Larix
-> laricina* OR "lowland conifer" OR "northern white cedar" OR "black ash")
-> AND (harvest\* OR clearcut\* OR "clear-cut\*" OR logging OR thinning OR
-> shelterwood OR silvicultur\*) AND ("water table" OR watertable OR
-> groundwater OR streamflow OR runoff OR discharge OR "water yield" OR
-> outflow OR hydrolog\*)
