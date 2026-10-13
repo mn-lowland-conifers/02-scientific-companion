@@ -1,113 +1,61 @@
-# 2 Data and Covariates
+# 2. Data & Covariates
 
-Each model in this project is created using two types of input. The first is the point
-observations that are used to train and validate the models, and the second is a statewide covariate raster stack that is used to train models at each of the point locations as well as to create the spatial predictions that become the final raster map product. This section covers the consolidation and preparation of this data.
+Each model in this project is created using two types of input. The first is the point observations used to train and validate the models. The second is a statewide covariate raster stack, which is sampled at each point location to train the models and is used to create the spatial predictions that become the final raster map products. This section summarizes the process of data consolidation and curation. Additional details on processing parameters, software, and implementation are documented in the technical ebook (03-peatland-carbon-modeling).
 
-## 2.1 Point Data
+## 2.1 Study Area and Peatland Definition
 
-### 2.1.1 Data Sources
+The study area of this project is the entire state of Minnesota. Peat occurrence is treated as a spatial prediction target and is not synonymous with wetlands or mapped organic soils. Peat presence was defined from the point data observations described below and represented with the binary target `peat_binary`, where 1 denotes peat present and 0 denotes peat absent. Peat probability, peat depth, and peat decomposition are modeled as separate targets.
 
-Training and validation observations are compiled from three primary sources:
+## 2.2 Reference and Training Data
 
-- **Minnesota Peat Inventory** is a dataset collected by the Minnesota DNR during the 1970’s and 80’s. It contains probe measurement peat depths across peatlands in Minnesota as well as laboratory analyzed data including von post decomposition class, bulk density, carbon content, ash content, among other metrics at a horizon level. 
-- **NASIS pedon data** is the USDA’s Natural Resource Conservation Services data set that populates soil survey. The dataset contains soil profile descriptions of both mineral and organic soils across the country 
-- **Minnesota Biological Survey (MBS)** releve dataset contributes presence and absence observations derived from native plant community classifications where peat associated community types were coded as peat present and non peat (upland) communities were coded as peat absent. 
+### 2.2.1 Point Observations
 
-### 2.1.2 Curation by Model Type
+Training and validation observations were compiled from three primary sources.
 
-The three data sources were combined and filtered depending on which
-model the resulting dataset trains, producing three separate point CSVs:
+**Minnesota Peat Inventory** is a dataset collected by the Minnesota DNR during the 1970s and 1980s. It contains probe measurement peat depths across peatlands in Minnesota as well as laboratory analyzed data including von post decomposition class, bulk density, carbon content, ash content, among other metrics at a horizon level. 
 
-| Dataset | Target |N |
-|---|---|---:|
+
+**NASIS pedon data** The National Soil Information System (NASIS) is the USDA Natural Resources Conservation Service database that populates soil survey. The dataset contains soil profile descriptions of both mineral and organic soils across the country.
+
+**Minnesota Biological Survey Relevé data** The MBS relevé dataset contributes presence and absence observations derived from native plant community classifications. Peat associated community types are coded as peat present and non-peat (upland) communities are coded as peat absent. Because these labels are inferred from plant community type and not directly measured they only populate peat occurrence.
+
+The three sources were combined and filtered according to the model the resulting dataset trains, producing three separate point datasets:
+
+**Point datasets used to train and validate each model.**
+
+| Dataset | Target | N |
+|---|---|---|
 | Probability | `peat_binary` (1/0) | 57,134 |
 | Depth | `depb` (cm) | 8,223 |
-| Composition | `Fibric/Hemic/Sapric/Mineral_pct` | 18,041 |
+| Composition | `Fibric_pct`, `Hemic_pct`, `Sapric_pct` | 18,041 |
 
-## 2.2 Covariate Stack
+### 2.2.2 Wetland and Soil Reference Layers
 
-### 2.2.1 Computing Environment and Reference Grid
+Two statewide layers provide wetland and soil context. The National Wetlands Inventory (NWI) was rasterized and classified by Cowardin code into three groups: non-wetland, wetland, and lowland conifer. Model experiments found that this three-class coding gave no improvement over a binary wetland/non-wetland coding, so the binary version was used as a covariate. The gNATSGO raster was used to classify organic soils into eight taxonomic classes, as well as a binary "any organic component" layer. Both gNATSGO-derived products are peat classification layers, so they were excluded from probability model training and retained as reference and validation layers.
 
-All covariate processing and model training was performed on the Minnesota Supercomputing Institute (MSI) Agate cluster (AMD EPYC, SLURM batch scheduling). A conda environment (gdalenvgeospat) was created to include geospatial libraries such as GDAL, rasterio, fiona, pyproj, shapely as well as machine learning packages scikit-learn, XGBoost, LightGBM, and Optuna that were not available on MSI environments.
+## 2.3 Covariate Stack
 
-Every covariate is aligned to a reference grid (gNATSGO 10m MUKEY) using `gdalwarp` with bilinear resampling for the continuous covariates and nearest-neighbor for categorical covariates.
+Environmental covariates representing terrain, hydrology, vegetation, climate, and landscape were curated as spatial raster data. All covariates were aligned to a 10m grid in EPSG:5070 (NAD83 / Conus Albers Equal Area) which allows layers from different sources to be stacked and read pixel-for-pixel. In total, there were 172 candidate features before any filtering was completed.
 
-- **Dimensions:** 66,474 × 75,185 pixels
-- **CRS:** EPSG:5070 (NAD83 / Conus Albers Equal Area)
-- **Resolution:** 10 m
-- **Origin:** (−99,098, 3,021,389)
+**Terrain and hydrology.** The USGS 3D Elevation Program (3DEP) 10m digital elevation model (DEM) was mosaicked statewide and used to compute terrain derivatives with WhiteboxTools. This included derivatives such as slope, aspect, hillshade, curvature, deviation from mean elevation, and relative topographic position. Derivatives that are impacted by water flow were computed separately by HUC8 watershed, with a 5km buffer applied around each HUC8 boundary to avoid edge effects and then mosaicked together. The DEM was first hydrologically conditioned then derivatives such as D8 and D-infinity flow accumulation and topographic wetness index (TWI) were calculated.
 
-The shared reference grid allows covariates coming from different sources to be stacked together and read pixel-for-pixel across the entire state boundary.
+**Imagery.** Sentinel-2 surface reflectance imagery (2019–2024) was composited in Google Earth Engine (GEE) into spring (April–May), summer (June–August), and fall (September–October) medians after cloud masking, with snow and ice also masked in spring and fall. Each seasonal composite contains ten spectral bands and two derived indices: the normalized difference vegetation index (NDVI), which indicates vegetation health and density, and SWDI, derived from the green and red-edge-1 bands, which indicates soil moisture sensitivity. Tasseled Cap Brightness, Greenness, and Wetness components were also computed from the Sentinel-2 imagery using the coefficients of Shi and Xu (2019).
 
-### 2.2.2 Terrain Derivatives
+**Radar imagery.** Sentinel-1 synthetic aperture radar (SAR) data was composited in GEE. Each seasonal composite includes VV backscatter (dB), VH backscatter (dB), and the VV/VH ratio.
 
-The USGS 3D Elevation Program (3DEP) 10m DEM was used as the elevation source. It was  mosaicked statewide and then clipped to the Minnesota state boundary. Terrain derivatives were computed from the DEM using WhiteboxTools (v2.4.0), using one of two processing methods depending on if the derivative depends on watershed context or not. 
+**Climate.** PRISM 30-year climate normals were used for mean annual precipitation, mean July maximum temperature, mean annual temperature, and mean January minimum temperature. All layers and were resampled to 10m. Because of their coarseness these layers represent large climate gradients and not local variations.
 
-- **Statewide, computed directly on the DEM**: slope, aspect, hillshade, plan/profile/mean/maximal curvature, geomorphons, Pennock landform class, deviation from mean elevation (4/8/16 m), and relative topographic position (4/8/16 m).
-- **By HUC8 watershed** This method was used for derivatives that depend on water flow and are sensitive to upstream drainage. To accomplish this, Minnesota was split into 127 HUC8 watersheds, each buffered to 5km to avoid edge effects and processed independently tile by tile. Then each of the 127 tiles were mosaicked together with the buffer zones trimmed off to get full state coverage. This group includes the hydrologically conditioned (breached) DEM, D8 and D-infinity flow accumulation, and the topographic wetness index (TWI).
-
-**Hydrological conditioning:** the DEM was hydrologically conditioned before
-computing flow dependent derivatives. This was done using a five-step process on each HUC8 tile:
-
-1. `FillSingleCellPits` — remove single-cell LiDAR noise artifacts
-2. `FlattenLakes` — flatten lake surfaces to a uniform minimum elevation
-3. `TopologicalBreachBurn` — burn the stream network into the DEM (snap tolerance: 2.0 m)
-4. `BreachDepressionsLeastCost` — breach through road embankments and other
-   artificial barriers (max breach length: 100 cells / 100 m; max cost: 1.0 m)
-5. `FillSingleCellPits` — final cleanup
-
-Input vector layers for this step were DNR HydroFeatures (lakes), DNR RiversStreams (streams), and MnDOT Roadway Routes (roads).
-
-### 2.2.3 Imagery
-
-**Sentinel-2** imagery (COPERNICUS/S2_SR_HARMONIZED, 2019–2024) was composited using Google Earth Engine (GEE) into three seasonal medians: spring (April–May), summer (June–August), and fall (September–October). Cloud masking was performed using the SCL layer (excluding cloud shadow, medium/high cloud, and thin cirrus classes) and a pre-filter dropping
-images with >30% cloud cover. Spring and fall composites also masked snow and ice.
-Each of the three seasonal composites contains 10 raw bands (B02–B08A, B11, B12) plus
-two derived indices:
-**NDVI** (B08−B04)/(B08+B04) shows vegetation health and density
-**SWDI** (from green/B03 and red-edge-1/B05) shows soil moisture sensitivity
-
-**Tasseled Cap** transformations (Brightness/TCB, Greenness/TCG, and Wetness/TCW) were
-computed from sentinal-2 imagery on MSI by applying specific coefficients developed by Shi and Xu (2019). The outputs were then checked against expected correlations (positive Brightness–Greenness correlation, negative Brightness–Wetness)
-
-**Sentinel-1 SAR** data was composited from GEE. Each seasonal composite provides three bands: VV (dB), VH (dB), and the VV/VH ratio
-
-### 2.2.4 Climate
-
-**PRISM** 30-year climate normals were used for mean annual precipitation, mean July maximum temperature, mean annual temperature, and mean January minimum temperature. All four were resampled to 10m using bilinear interpolation.
-
-### 2.2.5 Wetland and Soil Reference Layers
-
-**National Wetlands Inventory (NWI):** Wetland polygons were rasterized and classified by Cowardin code into three groups: non-wetland, wetland, and lowland conifer (PFO4/PSS4/PFO2/PSS2 plus other codes with "/4"). Model experimentation found that the 3 class coding gave no improvement over a binary wetland/non-wetland coding, so the binary version was used as the final covariate.
-
-**gNATSGO organic soils:** The gNATSGO raster was used to classify organic soils into 8 taxonomic classes as well as a binary "any organic component" layer. Both gNATSGO-derived products are peat classification layers and were excluded from the probability model training but retained as reference/validation layers. 
-
-### 2.2.6 Distance Features
-
-Euclidean distance rasters to water bodies, streams, and roads were computed from
-Minnesota statewide vector layers (MnDOT Roadway Routes; DNR RiversStreams; DNR
-HydroFeatures) using GDAL proximity tools.
-
-### 2.2.7 Excluded Categorical Layers
-
-Three one-hot encoded categorical layers: **quaternary geology classification**,
-**Pennock landform class**, and **geomorphons** were tested early in the project
-(03-peatland-carbon-modeling `exp401`–`exp408`) and eventually excluded from all
-production models. These layers produced polygon shaped artifacts in the spatial inference outputs. 
-
-## 2.3 Candidate Feature Set Summary
-
-Combining all covariate groups above, the feature stack totaled 172 features before any filtering. Two reduction stages were then applied:
-
-1. **Correlation filtering** (Pearson |r| ≥ 0.90, dropping the lower variance feature of
-   each correlated pair) 
-2. **Recursive Feature Elimination**, applied only for Random Forest models 
-
-Final feature counts and the specific covariates retained are included in the model's results in Ch. 3 (Probability), Ch. 4 (Depth), and Ch. 5 (Composition).
+**Distance features.** Euclidean distance rasters to water bodies, streams, and roads were computed from state vector layers.
 
 
-## Sections to cover
-- 2.1 Study area & peatland definition — extent, ecological provinces, peat/histosol definition, depth threshold
-- 2.2 Reference/training data — NWI; gSSURGO/histosol layer; DNR landholdings & School Trust Lands; field obs and legacy cores/boreholes; provenance and vintages
-- 2.3 Covariate stack — terrain/LiDAR derivatives, Sentinel-1, Sentinel-2, climate (PRISM), hydrography/ditch proximity; resolution 10m, projection, tiling scheme
-- 2.4 Harmonization, QA/QC — resampling/alignment, gap-filling, cloud/water masking; Google Earth Engine + MSI HPC; storage; manifest-driven tiling; versioning
+## 2.4 Harmonization and QC
+
+Each covariate was aligned to a reference grid (gNATSGO 10m MUKEY raster) using bilinear resampling for continuous covariates and nearest-neighbor resampling for categorical covariates. Quality control steps were taken with the imagery layers including screening Sentinel-2 imagery with scene-level cloud thresholds and pixel-level masks, and verifying the Tasseled Cap outputs against expected correlation values (a positive Brightness–Greenness correlation and a negative Brightness–Wetness correlation).
+
+The covariate raster stack was reduced in two stages before modeling. First, correlation filtering (Pearson |r| ≥ 0.90) removed the lower-variance feature of each correlated pair. Second, recursive feature elimination (RFE) was applied to the Random Forest models only. The retained covariates differ depending on model and target, and they are reported with each model.
+
+Imagery compositing was performed in GEE. Terrain processing, covariate alignment, and model training were performed on the Minnesota Supercomputing Institute (MSI) Agate cluster. The software environment, tiling scheme, file organization, and processing parameters are documented in the technical methods ebook (03-peatland-carbon-modeling).
+
+## References
+
+Shi, T., and Xu, H. (2019). Derivation of Tasseled Cap Transformation coefficients for Sentinel-2 MSI at-sensor reflectance data. *IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing*, 12(10), 4038–4048.
