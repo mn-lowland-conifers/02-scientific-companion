@@ -31,7 +31,7 @@ This preserves the relative proportions predicted by the individual models while
 
 Random Forest, XGBoost, and LightGBM were compared for each composition target. Recursive feature elimination (RFE) was applied to the Random Forest models only, with a separate feature set selected for each target. The final algorithm for each target was selected by spatial cross-validation R² (50 km blocks).
 
-Table RFE feature sets for the Random Forest models.
+RFE feature sets for the Random Forest models.
 
 | Target | RFE features | RFE spatial R² |
 |---|---|---|
@@ -39,7 +39,7 @@ Table RFE feature sets for the Random Forest models.
 | Hemic | 30 | 0.0783 |
 | Sapric | 32 | 0.1650 |
 
-Table Base (untuned) cross-validation results by algorithm, reported as spatial R² / random R². The best spatial R² for each target is in bold.
+Base (untuned) cross-validation results by algorithm, reported as spatial R² / random R². The best spatial R² for each target is in bold.
 
 | Target | Random Forest | XGBoost | LightGBM |
 |---|---|---|---|
@@ -49,7 +49,7 @@ Table Base (untuned) cross-validation results by algorithm, reported as spatial 
 
 LightGBM achieved the highest spatial R² for fibric and hemic percentage. For sapric percentage, Random Forest performed marginally better than LightGBM (0.207 versus 0.204) so Random Forest was selected for sapric and LightGBM for fibric and hemic.
 
-Table Final composition models and cross-validated performance.
+Final composition models and cross-validated performance.
 
 | Target | Final model | Spatial R² | Random R² | Random MAE |
 |---|---|---|---|---|
