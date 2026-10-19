@@ -52,7 +52,7 @@ Environmental covariates including features such as terrain, hydrology, vegetati
 
 Each covariate was aligned to a reference grid (gNATSGO 10m MUKEY raster) using bilinear resampling for continuous covariates and nearest-neighbor resampling for categorical covariates. Quality control steps were taken with the imagery layers including screening Sentinel-2 imagery with scene-level cloud thresholds and pixel-level masks, and verifying the Tasseled Cap outputs against expected correlation values (a positive Brightness–Greenness correlation and a negative Brightness–Wetness correlation).
 
-The covariate raster stack was reduced in two stages before modeling. First, correlation filtering (Pearson |r| ≥ 0.90) removed the lower-variance feature of each correlated pair. Second, recursive feature elimination (RFE) was applied to the Random Forest models only. The retained covariates differ depending on model and target, and they are reported with each model.
+The covariate raster stack was reduced in two stages before modeling. First, correlation filtering (Pearson |r| ≥ 0.90) removed the lower-variance feature of each correlated pair. Second, recursive feature elimination (RFE) was applied to the Random Forest models only. The final covariates used depend on the specific model and target, and are reported with each model.
 
 Imagery compositing was performed in GEE. Terrain processing, covariate alignment, and model training were performed on the Minnesota Supercomputing Institute (MSI) Agate cluster. The software environment, tiling scheme, file organization, and processing parameters are documented in the technical methods ebook (03-peatland-carbon-modeling).
 
