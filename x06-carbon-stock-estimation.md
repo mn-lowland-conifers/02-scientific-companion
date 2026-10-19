@@ -18,7 +18,7 @@ Part I — Statewide Belowground Carbon: Digital Soil Mapping
 The statewide full profile carbon stock map is made with a depth curve model rather
 than using the modeling approach similar to the probability and depth workflows.
 
-**Training set:** data from the Minnesota Peat inventory was used to pull the 1,609 criteria B pedons (§9.4) which were profiles that have an observed non organic bottom along with complete bulk density and SOC% lab data (measured or gap-filled, §9.3).
+**Training set:** data from the Minnesota Peat inventory was used to pull the 1,609 criteria B pedons (see 03-peatland-carbon-modeling) which were profiles that have an observed non organic bottom along with complete bulk density and SOC% lab data (measured or gap-filled).
 
 **Models** Two candidate models, a linear and random forest, were fit using the criteria B data set and maximum observed peat depth as the predictor. Both were evaluated on 50km block spatial cross-validation and with random cross-validation (5 folds each). The linear model was selected as the final based on its spatial CV performance (§6.1, table).
 
