@@ -1,6 +1,6 @@
 # 2. Data & Covariates
 
-Each model in this project is created using two types of input. The first is the point observations used to train and validate the models. The second is a statewide covariate raster stack, which is sampled at each point location to train the models and is used to create the spatial predictions that become the final raster map products. This section summarizes the process of data consolidation and curation. Additional details on processing parameters, software, and implementation are documented in the technical ebook (03-peatland-carbon-modeling).
+Each model in this project is created using two types of input. The first is the point observations used to train and validate the models. The second is a statewide covariate raster stack, which is sampled at each point location to train the models and is used to create the spatial predictions that become the final raster map products. This section goes over the methods of curation and consolidation of this data. Additional information on the parameters, software, and implementation are documented in the technical ebook (03-peatland-carbon-modeling).
 
 ## 2.1 Study Area and Peatland Definition
 
@@ -15,7 +15,7 @@ Training and validation observations were compiled from three primary sources.
 **Minnesota Peat Inventory** is a dataset collected by the Minnesota DNR during the 1970s and 1980s. It contains probe measurement peat depths across peatlands in Minnesota as well as laboratory analyzed data including von post decomposition class, bulk density, carbon content, ash content, among other metrics at a horizon level. 
 
 
-**NASIS pedon data** The National Soil Information System (NASIS) is the USDA Natural Resources Conservation Service database that populates soil survey. The dataset contains soil profile descriptions of both mineral and organic soils across the country.
+**NASIS pedon data** The National Soil Information System (NASIS) is the USDA Natural Resources Conservation Service (NRCS) database that populates soil survey. The dataset contains soil profile descriptions of mineral and organic soils across the United States.
 
 **Minnesota Biological Survey Relevé data** The MBS relevé dataset contributes presence and absence observations derived from native plant community classifications. Peat associated community types are coded as peat present and non-peat (upland) communities are coded as peat absent. Because these labels are inferred from plant community type and not directly measured they only populate peat occurrence.
 
@@ -35,11 +35,11 @@ Two statewide layers provide wetland and soil context. The National Wetlands Inv
 
 ## 2.3 Covariate Stack
 
-Environmental covariates representing terrain, hydrology, vegetation, climate, and landscape were curated as spatial raster data. All covariates were aligned to a 10m grid in EPSG:5070 (NAD83 / Conus Albers Equal Area) which allows layers from different sources to be stacked and read pixel-for-pixel. In total, there were 172 candidate features before any filtering was completed.
+Environmental covariates including features such as terrain, hydrology, vegetation, climate, and landscape were curated as spatial raster data. All covariates were aligned to the same 10m grid in EPSG:5070 (NAD83 / Conus Albers Equal Area) which allows layers from different sources to be stacked used in model training. In total, there were 172 candidate features before any filtering was completed.
 
-**Terrain and hydrology.** The USGS 3D Elevation Program (3DEP) 10m digital elevation model (DEM) was mosaicked statewide and used to compute terrain derivatives with WhiteboxTools. This included derivatives such as slope, aspect, hillshade, curvature, deviation from mean elevation, and relative topographic position. Derivatives that are impacted by water flow were computed separately by HUC8 watershed, with a 5km buffer applied around each HUC8 boundary to avoid edge effects and then mosaicked together. The DEM was first hydrologically conditioned then derivatives such as D8 and D-infinity flow accumulation and topographic wetness index (TWI) were calculated.
+**Terrain and hydrology.** The USGS 3D Elevation Program (3DEP) 10m digital elevation model (DEM) was mosaicked statewide and used to compute terrain derivatives with WhiteboxTools. This included the derivatives of slope, aspect, hillshade, curvature, deviation from mean elevation, and relative topographic position. Derivatives that are impacted by water flow were computed separately by HUC8 watershed instead of statewide. The DEM was first hydrologically conditioned then derivatives of D8 and D-infinity flow accumulation and topographic wetness index (TWI) were calculated. A 5km buffer was placed around each HUC8 boundary to avoid edge effects during this process. 
 
-**Imagery.** Sentinel-2 surface reflectance imagery (2019–2024) was composited in Google Earth Engine (GEE) into spring (April–May), summer (June–August), and fall (September–October) medians after cloud masking, with snow and ice also masked in spring and fall. Each seasonal composite contains ten spectral bands and two derived indices: the normalized difference vegetation index (NDVI), which indicates vegetation health and density, and SWDI, derived from the green and red-edge-1 bands, which indicates soil moisture sensitivity. Tasseled Cap Brightness, Greenness, and Wetness components were also computed from the Sentinel-2 imagery using the coefficients of Shi and Xu (2019).
+**Imagery.** Sentinel-2 imagery (2019–2024) was composited in Google Earth Engine (GEE) into spring (April–May), summer (June–August), and fall (September–October) medians. Cloud masking was applied to all 3 seasons and snow and ice were also masked for spring and fall. Each seasonal composite has ten spectral bands and two derived indices: the normalized difference vegetation index (NDVI), which indicates vegetation health and density, and SWDI, derived from the green and red-edge-1 bands, which indicates soil moisture sensitivity. Tasseled Cap Brightness, Greenness, and Wetness components were also computed from the Sentinel-2 imagery using the coefficients of Shi and Xu (2019).
 
 **Radar imagery.** Sentinel-1 synthetic aperture radar (SAR) data was composited in GEE. Each seasonal composite includes VV backscatter (dB), VH backscatter (dB), and the VV/VH ratio.
 
