@@ -108,7 +108,7 @@ and depths beyond 300 cm are rare (0.4% of pixels) but present.
 
 ### Limitation: Deep peat
 
-LightGBM regression predictions are capped at 366 cm, even though the model was trained on depth points that reached up to 900cm. This is a property of tree-ensemble regression where LightGBM is predicting the mean target value of the training points in each leaf, and the rarer deep peat observations get averaged together with shallower neighbor observations during training. Additionally, the tuned `min_child_samples = 90` constraint requires a larger minimum sample count per leaf and further promotes averaging. This means that the deepest peat deposits in Minnesota are likely being underpredicted by the statewide inference map.
+LightGBM regression predictions are capped at 490 cm, even though the model was trained on depth points that reached up to 900cm. This is a property of tree-ensemble regression where LightGBM is predicting the mean target value of the training points in each leaf, and the rarer deep peat observations get averaged together with shallower neighbor observations during training. Additionally, the tuned `min_child_samples = 90` constraint requires a larger minimum sample count per leaf and further promotes averaging. This means that the deepest peat deposits in Minnesota are likely being underpredicted by the statewide inference map.
 
 ### Downstream role
 
